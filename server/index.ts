@@ -21,7 +21,7 @@ const app = express();
 import type { Response, Request } from 'express';
 import TwitterRouter from './api/twitter';
 import UsersRouter from './api/users';
-
+import detectTextRouter from './api/textDetection';
 import { addUser, getUserById } from './database';
 import { profile } from 'console';
 import { any } from 'sequelize/dist/lib/operators';
@@ -55,7 +55,7 @@ app.use(cors({ credentials: true,
   app.use('/api/genres', GenresRouter);
   app.use('/api/twitter', TwitterRouter);
   app.use('/api/users', UsersRouter);
-
+  app.use('/api/detectText', detectTextRouter);
 
   //Start of Passport
   app.use(cookieParser());
