@@ -33,10 +33,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const port = process.env.PORT || 3000;
 const dist = path.resolve(__dirname, '..', 'client/dist');
 app.use(cors({origin: true, credentials: true}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000}));
+app.use(express.json({limit: '50mb'}));
 app.use(express.static(dist))
-app.use(express.json());
 
 
 app.use(cors({ credentials: true,
@@ -47,7 +46,6 @@ app.use(cors({ credentials: true,
   'preflightContinue': false}));
 
   app.use(express.static(dist));
-  app.use(bodyParser.json());
   //Routers
   app.use('/api/movies', MoviesRouter);
   app.use('/api/actors', ActorsRouter);
