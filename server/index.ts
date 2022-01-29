@@ -99,9 +99,7 @@ async function(request: any, accessToken: any, refreshToken: any, profile: any, 
   //returns [{}, boolean]
   // [0] = user object
   // [1] = true if created, false if found
-  // console.log('google profile', profile.id);
     const newUser = await addUser(profile);
-    // console.log('google newUser', newUser)
     return done(null, newUser);
 }));
 
@@ -115,16 +113,14 @@ async function(request: any, accessToken: any, refreshToken: any, profile: any, 
   //returns [{}, boolean]
   // [0] = user object
   // [1] = true if created, false if found
-    // console.log('twitter profile', profile);
-    const newTwitterUserObj = {
-      id: profile.id,
-    };
-    // console.log('twitter object', profile);
+    const userObject = profile._json;
     const newUser = await addUser({
-      id: profile.id,
-      displayName: profile.username,
+      id: userObject.id_str,
+      displayName: userObject.name,
+      screen_name: userObject.screen_name,
+      profile_image_url: userObject.profile_image_url,
+      profile_cover_photo_url: userObject.profile_banner_url
     });
-    // console.log('twitter newUser:', newUser)
     return done(null, newUser);
 }));
 
@@ -155,7 +151,7 @@ app.get('/auth/twitter/callback',
 passport.authenticate('twitter', { failureRedirect: '/' }),
 (req: Request, res: Response) => {
   res.cookie('Flix', req.user)
-  console.log('requested user twitter', req.user);
+  // console.log('requested user twitter', req.user);
   res.redirect('/');
 });
 //End of Passport
