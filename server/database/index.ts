@@ -401,6 +401,8 @@ interface AddUserArgs {
     familyName: string;
   };
   photos?: { value: string; }[]
+  profile_image_url: string;
+  profile_cover_photo_url?: string;
   number?: string;
   theme?: boolean;
   age?: number;
@@ -422,7 +424,8 @@ export const addUser = async (user: AddUserArgs): Promise<UserObject | void | un
       twitter_user_name: user.screen_name,
       first_name: user.name?.givenName,
       last_name: user.name?.familyName,
-      profile_image_url: user.photos && user.photos[0].value,
+      profile_image_url: user.photos && user.photos[0].value || user.profile_image_url,
+      profile_cover_photo_url: user.profile_cover_photo_url,
       sessionID: user.number,
       theme: user.theme,
       age: user.age
