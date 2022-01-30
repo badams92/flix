@@ -67,6 +67,9 @@ const Profile: FC<any> = ({ user }) => {
     return <MovieCards userId={user.id} />
   };
 
+
+
+
   //put in functions for handling the photo changes here, then pass the click handler for those down to user prefs
 
   //Used to get all favorites upon initial load.
@@ -177,9 +180,10 @@ const Profile: FC<any> = ({ user }) => {
             >
               {user.username}
             </Typography>
-            {!user.twitter_user_name ? null : <Typography
+            {!user.twitter_user_name ? null :
+            <Typography className={classes.userName}
               align={"center"}
-              variant="subtitle2"
+              variant="h6"
             >
               {`@${user.twitter_user_name}`}
             </Typography>}

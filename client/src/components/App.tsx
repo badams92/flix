@@ -5,18 +5,12 @@ import { Routes, Route } from 'react-router-dom';
 import MovieDetail from './MovieDetail';
 import axios from 'axios';
 import Login from './Login';
-import TsParticles from './tsParticle/tsParticles';
-import Theme from './Theme';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Switch from '@mui/material/Switch';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 
 import styles from '../styles/styles';
-
-
-
-
 
 
 const App: FC = () => {

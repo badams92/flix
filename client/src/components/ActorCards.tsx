@@ -14,8 +14,6 @@ const ActorCards = ({ userId }: { userId: number }) => {
   };
 
   const removeFavorite = (actorId: number) => {
-    console.log('currentUser', userId)
-    console.log('remove favorite actors hit', actorId)
     axios.delete('/api/users/actors/destroy', {
       data: {
         userId,
