@@ -64,7 +64,6 @@ const App: FC = () => {
           <ThemeProvider theme={theme}>
             <Paper style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)', backdropFilter: 'blur(2px)' }}>
               <CssBaseline />
-              {console.log('current user profile image', currentUser.profile_image_url)}
               <NavigationBar
               userImage={currentUser.profile_image_url}
               themeSwitch={<Switch checked={currentTheme} onChange={() => handleTheme()} />} />

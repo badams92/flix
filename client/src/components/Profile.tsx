@@ -67,6 +67,9 @@ const Profile: FC<any> = ({ user }) => {
     return <MovieCards userId={user.id} />
   };
 
+
+
+
   //put in functions for handling the photo changes here, then pass the click handler for those down to user prefs
 
   //Used to get all favorites upon initial load.
