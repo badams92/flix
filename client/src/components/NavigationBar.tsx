@@ -46,9 +46,7 @@ const withRouter = (Component: FC) => {
   return Wrapper;
 };
 
-const NavigationBar:FC = (props: any, { userImage }: { userImage: string }) => {
-  console.log('user image url', userImage)
-  //^this keeps coming through undefined
+const NavigationBar:FC = (props: any) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = (open: boolean) => (
@@ -82,7 +80,7 @@ const NavigationBar:FC = (props: any, { userImage }: { userImage: string }) => {
 
             </Typography>
             {props.themeSwitch}
-            <Avatar src={userImage}/>
+            <Avatar src={props.userImage}/>
           </Toolbar>
         </AppBar>
       </div>
