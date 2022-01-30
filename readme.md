@@ -1,4 +1,4 @@
-#Flixar
+# Flixar
 
 Authors: Ben Lyon, Sam Belete, Ben Adams, Hunt Navar
 ***
@@ -11,7 +11,7 @@ A text by search feature is also implemented so movie text can be posted via a p
 Some of the technologies for this project include the utilization of React, Cloudinary, Google Cloud Vision, IMDB APIs, Postgresql, Oauth, TypeScript, nodemon, and AWS deployment.
 ***
 
-#Setup
+## Setup
 
 The setup for the `.env` file should look similar to this
 
@@ -35,7 +35,7 @@ GOOGLE_APPLICATION_CREDENTIALS= // path to the JSON file of a Google Service acc
 
 This app uses PostgreSQL
 
-Schema
+## Schema
 Users table with ID, username
 Movies table with IMDB, Title, Description, thumbnail Cover image, trailer link, release date
 Join table to populate users and movies to add favorites
