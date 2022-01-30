@@ -62,7 +62,8 @@ MoviesRouter.get('/directors/:id', (req: Request, res: Response) => {
 MoviesRouter.post('/saveMovie', (req: Request, res: Response) => {
   type movieData = {imDbId: string; title: string; year: string; videoDescription: string; linkEmbed: string; genres: string;
   actors: string; directors: string; thumbnailUrl: string};
-  addMovieInfo(req.body)
+  const userId = req.body.userId
+  addMovieInfo(req.body.searchResults)
     .then((data: any) => {
       const {imDbId, title, year, videoDescription, linkEmbed, genres, actors, directors, thumbnailUrl}: movieData = data;
       const movie = {
@@ -76,12 +77,14 @@ MoviesRouter.post('/saveMovie', (req: Request, res: Response) => {
         directors: directors,
         thumbnailUrl: thumbnailUrl
       };
-      addMovie(movie).then((data: any) => {
-        res.sendStatus(201);
-      }).catch((err: any) => {
-        console.error("Couldn't save to database", err);
-        res.sendStatus(500);
-      })
+      addMovie(movie, userId)
+        .then((data: any) => {
+          res.sendStatus(201);
+        })
+        .catch((err: any) => {
+          console.error("Couldn't save to database", err);
+          res.sendStatus(500);
+        })
     }).catch((err: any) => {
       console.log("Error getting movie info", err);
       res.sendStatus(500);
