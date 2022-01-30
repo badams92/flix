@@ -26,14 +26,14 @@ const MovieDetail:FC = (props: any) => {
         setCurrentMovie(data);
       })
       .catch((err: any) => {
-        console.log('error getting movie', err);
+        console.error('error getting movie', err);
       });
   };
 
   const saveMovie = () => {
     axios.post('/api/users/user-movies', {movieId: id, userId: userId})
-      .then(() => console.log('success!'))
-      .catch((err: any) => console.log('failure to save'));
+      .then()
+      .catch((err: any) => console.error('failure to save', err));
   };
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const MovieDetail:FC = (props: any) => {
           padding: '10px'
         }}
       >
-        <Typography variant='h1'>{title}</Typography>
-        <Typography variant='h3'>{release_date}</Typography>
+        <Typography variant='h2'>{title}</Typography>
+        <Typography variant='h4'>{release_date}</Typography>
         <iframe width='1000' height='600' src={trailer_url} frameBorder='0'></iframe>
         <Typography variant='body1'>{description}</Typography>
         <Button variant='contained' onClick={saveMovie}>Save to favorites</Button>

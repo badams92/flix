@@ -146,7 +146,13 @@ const Home: FC = (props: any) => {
           ssr={true}
         >
           {
-            moviesObj[key].map((movie: MovieObj) => <CarouselItem item={movie} key={movie.movie_id} />)
+            moviesObj[key]
+              .sort((a, b) => {
+                const nameA = a.title.replace(/^The /, '').toLowerCase();
+                const nameB = b.title.replace(/^The /, '').toLowerCase();
+                return nameA > nameB ? 1 : -1;
+              })
+              .map((movie: MovieObj) => <CarouselItem item={movie} key={movie.movie_id} />)
           }
         </Carousel>
       </div>
