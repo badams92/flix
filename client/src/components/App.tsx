@@ -75,7 +75,7 @@ const App: FC = () => {
                       key={index}
                       element={<route.component user={currentUser} />} />;
                   })}
-                  <Route path='movies/:id' element={<MovieDetail />} />
+                  <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />
                   <Route path="*" element={<h2>404: Not found</h2>} />
                 </Routes>
               </div>

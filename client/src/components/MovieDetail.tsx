@@ -1,6 +1,7 @@
 import React, {FC, useState, useEffect} from "react";
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
+import { Typography, Button } from '@material-ui/core';
 
 interface MovieObj {
   id: number;
@@ -14,7 +15,8 @@ interface MovieObj {
   updatedAt?: string;
 }
 
-const MovieDetail:FC = () => {
+const MovieDetail:FC = (props: any) => {
+  const userId = props.children.id;
   const {id} = useParams();
   const [currentMovie, setCurrentMovie] = useState<null | MovieObj>(null);
 
@@ -28,12 +30,18 @@ const MovieDetail:FC = () => {
       });
   };
 
+  const saveMovie = () => {
+    axios.post('/api/users/user-movies', {movieId: id, userId: userId})
+      .then(() => console.log('success!'))
+      .catch((err: any) => console.log('failure to save'));
+  };
+
   useEffect(() => {
     getMovie(Number(id));
   }, []);
 
   if (!currentMovie) {
-    return <h2>Loading</h2>;
+    return <Typography variant='h2'>Loading</Typography>;
   } else {
     const {movie_id, title, release_date, description, trailer_url} = currentMovie;
     return (
@@ -42,13 +50,16 @@ const MovieDetail:FC = () => {
         style={{
           color: 'white',
           margin: '30px',
-          width: '1000px'
+          width: '1000px',
+          display: 'grid',
+          padding: '10px'
         }}
       >
-        <h1>{title}</h1>
-        <h3>{release_date}</h3>
+        <Typography variant='h1'>{title}</Typography>
+        <Typography variant='h3'>{release_date}</Typography>
         <iframe width='1000' height='600' src={trailer_url} frameBorder='0'></iframe>
-        <p>{description}</p>
+        <Typography variant='body1'>{description}</Typography>
+        <Button variant='contained' onClick={saveMovie}>Save to favorites</Button>
       </div>
     );
   }
