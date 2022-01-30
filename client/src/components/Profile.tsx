@@ -177,9 +177,10 @@ const Profile: FC<any> = ({ user }) => {
             >
               {user.username}
             </Typography>
-            {!user.twitter_user_name ? null : <Typography
+            {!user.twitter_user_name ? null :
+            <Typography className={classes.userName}
               align={"center"}
-              variant="subtitle2"
+              variant="h6"
             >
               {`@${user.twitter_user_name}`}
             </Typography>}

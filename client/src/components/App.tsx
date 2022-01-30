@@ -5,18 +5,12 @@ import { Routes, Route } from 'react-router-dom';
 import MovieDetail from './MovieDetail';
 import axios from 'axios';
 import Login from './Login';
-import TsParticles from './tsParticle/tsParticles';
-import Theme from './Theme';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Switch from '@mui/material/Switch';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 
 import styles from '../styles/styles';
-
-
-
-
 
 
 const App: FC = () => {
@@ -70,6 +64,7 @@ const App: FC = () => {
           <ThemeProvider theme={theme}>
             <Paper style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)', backdropFilter: 'blur(2px)' }}>
               <CssBaseline />
+              {console.log('current user profile image', currentUser.profile_image_url)}
               <NavigationBar
               userImage={currentUser.profile_image_url}
               themeSwitch={<Switch checked={currentTheme} onChange={() => handleTheme()} />} />
