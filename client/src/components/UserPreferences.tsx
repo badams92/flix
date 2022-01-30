@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { FC, useState, useEffect, SyntheticEvent } from 'react';
 import Button from '@mui/material/Button';
+import { Grid } from '@material-ui/core';
 
 const UserPreferences: FC<any> = ({ userId }: { userId: number }) => {
 
@@ -111,6 +112,10 @@ const UserPreferences: FC<any> = ({ userId }: { userId: number }) => {
         </form>
         <Button onClick={handleRemoveAge}>Submit age</Button>
       </div>
+
+      <Grid>
+
+      </Grid>
 
       <h3>Upload a profile photo</h3>
       {!!userPhoto && (
