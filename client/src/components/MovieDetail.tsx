@@ -42,7 +42,8 @@ const MovieDetail:FC = () => {
         style={{
           color: 'white',
           margin: '30px',
-          width: '1000px'
+          width: '1000px',
+          alignContent: 'center'
         }}
       >
         <h1>{title}</h1>

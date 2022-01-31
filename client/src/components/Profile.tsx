@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import {
   Avatar,
   Stack,
+  Button,
   Typography,
   Card,
   CardContent,
@@ -25,14 +26,14 @@ import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
 
-const Profile: FC<any> = ({ user }) => {
-
+const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
+  console.log('photo', photo)
   //User favorites {movies, actors, genres, directors}
   const [favoriteDirectors, setFavoriteDirectors] = useState<any>();
   const [favoriteGenres, setFavoriteGenres] = useState<any>();
   const [currentTab, setCurrentTab] = useState<string>('Favorite Movies');
   //photo states
-  const [userPhoto, setUserPhoto] = useState<any>();
+  const [userPhoto, setUserPhoto] = useState<any>(photo);
 
 
   const classes = useStyles();
@@ -67,97 +68,37 @@ const Profile: FC<any> = ({ user }) => {
     return <MovieCards userId={user.id} />
   };
 
-
+  // useEffect(() => {
+  //   setUserPhoto(user.profile_image_url)
+  // }, [])
 
 
   //put in functions for handling the photo changes here, then pass the click handler for those down to user prefs
 
-  //Used to get all favorites upon initial load.
-  // const getAllFavorites = (userId: number) => {
-  //   const getDirectors = axios.get(`/api/users/directors/${userId}`);
-  //   const getGenres = axios.get(`/api/users/genres/${userId}`);
-
-  //   axios.all([getActors, getDirectors, getGenres])
-  //     .then(responseArr => {
-  //       setFavoriteDirectors(responseArr[1].data.directors);
-  //       setFavoriteGenres(responseArr[2].data.genres);
-  //       console.log('Favorite directors', responseArr[1].data.directors)
-  //       console.log('Favorite genres', responseArr[2].data.genres)
-
-  //     }).catch((err) => { console.log('Unable to retrieve user favorites', err); })
+  // const handleProfilePhoto = (e: SyntheticEvent) => {
+  //   e.preventDefault();
+  //   const file = (e.target as HTMLInputElement).files![0];
+  //   setUserPhoto(URL.createObjectURL(file));
+  //   const data = new FormData();
+  //   data.append('image', file, file.name);
+  //   axios.post('/api/photos/imgUpload', data, {
+  //     headers: { 'Content-Type': 'multipart/form-data' }
+  //   })
+  //     .then(({ data }) => {
+  //       axios.patch(`/api/users/${user.id}`, { profile_image_url: data })
+  //         .then(() => {
+  //           setUserPhoto(data);
+  //           console.log('updated profile photo')
+  //         });
+  //     })
+  //     .catch((err: any) => {
+  //       console.error(err);
+  //     });
   // };
 
-  // useEffect(() => {
-  //   getAllFavorites(user.id);
-  // }, []);
-
-
-  //INDIVIDUAL UPDATE FUNCTIONS
-  //used for removing user favorites from the page.
-  /*
-
-
-  const getFavActors = (userId: number) => {
-    axios.get(`/api/actors/${userId}`)
-      .then(({data}) => {
-        setFavoriteActors(data)})
-      .catch(() => console.log('Failed to get favorite actors'));
-  };
   useEffect(() => {
-    getFavActors(user?.id);
-  }, [favoriteActors])
-
-
-  const getFavDirectors = (userId: number) => {
-    axios.get(`/api/directors/${userId}`)
-    .then(({data}) => {
-      setFavoriteDirectors(data)})
-    .catch(() => console.log('Failed to get favorite directors'));
-  };
-  useEffect(() => {
-    getFavDirectors(user?.id);
-  }, [favoriteDirectors])
-
-
-  const getFavGenres = (userId: number) => {
-    axios.get(`/api/genres/${userId}`)
-    .then(({data}) => {
-      setFavoriteGenres(data)})
-    .catch(() => console.log('Failed to get favorite genres'));
-  };
-  useEffect(() => {
-    getFavGenres(user?.id);
-  }, [favoriteGenres])
-
-    //TODO: Movies needs backend routes for user favorites
-  const getFavMovies = (userId: number) => {
-  axios.get(`/api/movies/${userId}`)
-  .then(({data}) => {
-    setFavoriteMovies(data[userId])})
-  .catch(() => console.log('Failed to get favorite movies'));
-  };
-  useEffect(() => {
-  getFavMovies(user?.id);
-  }, [favoriteMovies])
-
-  useEffect(() => {
-  //setTimeout b/c will throw 'unmounted' error without it.
-  setTimeout(() => {
-    setuser(children);
-  })
-  }, [children]);
-
-
-  // is there a way to set this up so that depending on whatever is clicked, that clicked item will be identified and passed
-  // into the axios put request, instead of creating a request for each item type
-  const removeFavorite = (num:any) => {
-  console.log('hello');
-  console.log('target title', num);
-  axios.delete(`/api/users/movies/${user.id}`)
-  .then(() => { console.log('Removed favorite')})
-  .catch(() => {console.log('Failed to remove')})
-  };
-  */
+    // setUserPhoto(photo)
+  }, [])
 
   return (
 
@@ -170,8 +111,25 @@ const Profile: FC<any> = ({ user }) => {
             </div>
             <div className={classes.main} style={{ maxHeight: '175px' }}>
               <Avatar sx={{ width: 250, height: 250 }}
-                src={user.profile_image_url} className={classes.profileImage} />
+                src={userPhoto} className={classes.profileImage} />
             </div>
+
+
+            <h3>Upload a profile photo</h3>
+            {!!photo && (
+              <div>
+                <img alt="not found" width={"250px"} src={photo} />
+              </div>
+            )}
+            <form
+              encType="multipart/form-data"
+            >
+              <input
+                type="file"
+                onChange={() => handlePhoto(photo)}
+              />
+            </form>
+
 
             <Typography
               align={"center"}
@@ -181,12 +139,12 @@ const Profile: FC<any> = ({ user }) => {
               {user.username}
             </Typography>
             {!user.twitter_user_name ? null :
-            <Typography className={classes.userName}
-              align={"center"}
-              variant="h6"
-            >
-              {`@${user.twitter_user_name}`}
-            </Typography>}
+              <Typography className={classes.userName}
+                align={"center"}
+                variant="h6"
+              >
+                {`@${user.twitter_user_name}`}
+              </Typography>}
 
             <CardContent className={classes.contentContainer}>
 
