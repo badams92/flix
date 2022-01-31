@@ -111,7 +111,7 @@ const App: FC = () => {
                         cover={currentUser.profile_cover_photo_url}
                         handlePhoto={handleProfilePhoto} />} />;
                   })}
-                  <Route path='movies/:id' element={<MovieDetail />} />
+                  <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />
                   <Route path="*" element={<h2>404: Not found</h2>} />
                 </Routes>
               </div>
