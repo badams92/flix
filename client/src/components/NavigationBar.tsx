@@ -46,12 +46,9 @@ const withRouter = (Component: FC) => {
   return Wrapper;
 };
 
-const NavigationBar:FC = (props: any, { userImage }: { userImage: string }) => {
-  console.log('user image url', userImage)
-  //^this keeps coming through undefined
+const NavigationBar:FC = (props: any) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const [userAvatar, setUserAvatar] = useState<string>();
   const toggleDrawer = (open: boolean) => (
     event: KeyboardEvent | MouseEvent,
   ) => {
@@ -70,10 +67,6 @@ const NavigationBar:FC = (props: any, { userImage }: { userImage: string }) => {
     return props.history.name === routeName;
   }
 
-  useEffect(() => {
-    setUserAvatar(userImage)
-  }, []);
-
   return (
     <div>
       <div className={classes.root}>
@@ -87,7 +80,7 @@ const NavigationBar:FC = (props: any, { userImage }: { userImage: string }) => {
 
             </Typography>
             {props.themeSwitch}
-            <Avatar src={userAvatar}/>
+            <Avatar src={props.userImage}/>
           </Toolbar>
         </AppBar>
       </div>
