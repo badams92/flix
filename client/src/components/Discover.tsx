@@ -151,8 +151,10 @@ const Discover:FC<any> = ({user}) => {
               </iframe>
               </Card>
 
-              <Grid item xs='auto'>
-                <Typography variant='h4' align='center'>
+              <Grid item xs='auto'
+                style={{backgroundColor: '#A4A4A4'}}
+              >
+                <Typography variant='h4' align='left'>
                 {!!currentMovie ? currentMovie.description : ''}
                 </Typography>
               </Grid>
