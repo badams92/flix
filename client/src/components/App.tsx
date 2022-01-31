@@ -18,7 +18,7 @@ const App: FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
   const [currentTheme, setCurrentTheme] = useState<boolean>(false);
 
-  const [userPhoto, setUserPhoto] = useState<any>(currentUser?.profile_image_url);
+  const [userPhoto, setUserPhoto] = useState<any>();
   const [coverPhoto, setCoverPhoto] = useState<any>();
 
 
@@ -41,10 +41,12 @@ const App: FC = () => {
       .then(({ data }) => {
         axios.patch(`/api/users/${currentUser.id}`, { profile_image_url: data })
           .then(() => {
-            setUserPhoto(data);
+            // setUserPhoto(data);
             console.log('data', data);
             console.log('updated profile photo')
-          });
+          }).then(() => {
+            getLoggedInUser();
+          })
       })
       .catch((err: any) => {
         console.error(err);
@@ -56,6 +58,7 @@ const App: FC = () => {
   const getLoggedInUser = () => {
     axios.get('/verify')
       .then(({ data }) => {
+        console.log('data', data);
         setCurrentUser(data);
         setCurrentTheme(data.theme);
       })
@@ -82,8 +85,8 @@ const App: FC = () => {
   //this only needs to run once, will update when the user logs out and is redirected to login page.
   useEffect(() => {
     getLoggedInUser();
-    // setUserPhoto(currentUser?.profile_image_url);
-    // setCoverPhoto(currentUser?.profile_cover_photo_url);
+    setUserPhoto(currentUser?.profile_image_url);
+    setCoverPhoto(currentUser?.profile_cover_photo_url);
   }, []);
 
 
@@ -107,8 +110,9 @@ const App: FC = () => {
                       key={index}
                       element={<route.component
                         user={currentUser}
-                        photo={currentUser.profile_image_url}
+                        photo={userPhoto}
                         cover={currentUser.profile_cover_photo_url}
+                        refreshUser={getLoggedInUser}
                         handlePhoto={handleProfilePhoto} />} />;
                   })}
                   <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />

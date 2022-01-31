@@ -97,7 +97,7 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
   // };
 
   useEffect(() => {
-    // setUserPhoto(photo)
+    setUserPhoto(photo)
   }, [])
 
   return (
@@ -126,7 +126,7 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
             >
               <input
                 type="file"
-                onChange={() => handlePhoto(photo)}
+                onChange={handlePhoto}
               />
             </form>
 
