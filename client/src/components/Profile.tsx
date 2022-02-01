@@ -14,6 +14,7 @@ import {
   CardMedia,
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -25,7 +26,7 @@ import MovieCards from './MovieCards';
 import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
-import { IconButton } from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import { styled } from '@material-ui/styles';
 import Tooltip from '@mui/material/Tooltip';
@@ -51,7 +52,7 @@ const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshU
   const tabInfo = [
     { title: 'Favorite Movies', icon: <FavoriteIcon /> },
     { title: 'Favorite Actors', icon: <SettingsAccessibilityIcon /> },
-    { title: 'Favorite Genres', icon: <TheaterComedyIcon /> },
+    // { title: 'Favorite Genres', icon: <TheaterComedyIcon /> },
     { title: 'Favorite Directors', icon: <MovieCreationIcon /> },
     { title: 'Settings', icon: <SettingsApplicationsIcon /> },
   ];
@@ -64,9 +65,9 @@ const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshU
     if (currentTab === 'Favorite Actors') {
       return <ActorCards userId={user.id} />
     }
-    if (currentTab === 'Favorite Genres') {
-      return <GenreCards userId={user.id} />
-    }
+    // if (currentTab === 'Favorite Genres') {
+    //   return <GenreCards userId={user.id} />
+    // }
     if (currentTab === 'Favorite Directors') {
       return <DirectorCards userId={user.id} />
     }
@@ -93,49 +94,56 @@ const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshU
           <Card className={classes.root}>
             <div style={{ height: '50vh' }}>
               <CardMedia className={classes.media} image={user.profile_cover_photo_url} title="Cover" />
-              {/* <div className={classes.media} style={{ maxHeight: '175px' }}>
+              <div className={classes.media} style={{ maxHeight: '175px' }}>
+                <div className={classes.main}>
+                  <Avatar
+                    title='profile-photo-container'
+                    sx={{ width: 250, height: 250 }}
+                    src={user.profile_image_url}
+                    className={classes.profileImage} />
+                </div>
+              </div>
+            </div>
+
+            <Grid
+              container
+              direction='row'
+              style={{ marginTop: '0.5rem' }}
+            >
+              <Grid item className={classes.main}>
+                <label htmlFor="icon-button-file">
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    onChange={handleProfilePhoto} />
+                  <Tooltip title='Upload a new profile photo' placement='bottom' arrow>
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <PhotoCamera />
+                    </IconButton>
+                  </Tooltip>
+                </label>
+              </Grid>
+              <Grid item>
                 <label htmlFor="contained-button-file">
-                <Input
-                  accept="image/*"
-                  id="contained-button-file"
-                  multiple type="file"
-                  onChange={handleCoverPhoto} />
-                <Tooltip title='Upload a new cover photo' placement='right'>
-                  <Button variant="contained" component="span">
-                    Upload
-                  </Button>
-                </Tooltip>
-              </label>
-              </div> */}
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={handleCoverPhoto} />
+                  <Tooltip title='Upload a new cover photo' placement='bottom' arrow>
+                    <Button variant="contained" component="span" startIcon={<AddPhotoAlternateIcon />}>
+                      Edit cover photo
+                    </Button>
+                  </Tooltip>
+                </label>
+              </Grid>
+            </Grid>
 
-            </div>
-            <div className={classes.main}>
-              <Avatar
-                title='profile-photo-container'
-                sx={{ width: 250, height: 250 }}
-                src={user.profile_image_url}
-                className={classes.profileImage} />
-            </div>
-
-
-            {/* <div className={classes.main}>
-              <label htmlFor="icon-button-file">
-                <Input
-                  accept="image/*"
-                  id="icon-button-file"
-                  type="file"
-                  onChange={handleProfilePhoto} />
-                <Tooltip title='Upload a new profile photo' placement='right'>
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="span"
-                  >
-                    <PhotoCamera />
-                  </IconButton>
-                </Tooltip>
-              </label>
-            </div> */}
 
 
 
