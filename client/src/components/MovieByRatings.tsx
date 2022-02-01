@@ -94,10 +94,19 @@ const MovieByRating:FC<any> = ({user}) => {
       <>
         <div
           style={{
-            display: 'grid',
+            display: 'flex',
+            justifyContent: 'center'
           }}
         >
-          <Button variant="contained" id="outlined-basic" style={{background: 'white', color: 'black', height: 'fit-content'}} onClick={() => {combinedFuncSub()}}>Show Previous Movie</Button>
+          <Button variant="contained" id="outlined-basic" style={{background: 'white', color: 'black', height: 'fit-content', marginRight: '30px'}} onClick={() => {combinedFuncSub()}}>Show Previous Movie</Button>
+          <Button variant="contained" id="outlined-basic" style={{background: 'white', color: 'black', height: 'fit-content', marginLeft: '30px'}} onClick={() => {combinedFuncAdd()}}>Show Next Movie</Button>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
           <Card
             variant='outlined'
             sx={{ maxWidth: 345, margin: '30px' }}
@@ -118,9 +127,14 @@ const MovieByRating:FC<any> = ({user}) => {
               </Typography>
             </CardContent>
           </Card>
-          <Button variant="contained" id="outlined-basic" style={{background: 'white', color: 'black', height: 'fit-content'}} onClick={() => {combinedFuncAdd()}}>Show Next Movie</Button>
         </div>
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            paddingBottom: '30px'
+          }}
+        >
           <Button type="submit" onClick={() => {saveMovie()}} variant="contained" id="outlined-basic" style={{background: 'white', color: 'black', height: 'fit-content'}}>Add movie to favorites</Button>
         </div>
       </>
