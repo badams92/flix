@@ -103,61 +103,32 @@ MoviesRouter.post('/', (req: Request, res: Response) => {
     });
 });
 
-MoviesRouter.get('/moviesByRatingPG', (req: Request, res: Response) => {
-  grabMovieIdWithRating("PG")
-     .then((data: any) => {
+MoviesRouter.get('/moviesByRating/:rating', (req: Request, res: Response) => {
+  grabMovieIdWithRating(req.params.rating)
+    .then((data: any) => {
        res.send(data);
-     }).catch((error: string) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
+    }).catch((error: string) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
 
-   MoviesRouter.get('/moviesByRatingPG-13', (req: Request, res: Response) => {
-  grabMovieIdWithRating("PG-13")
-     .then((data: any) => {
-       res.send(data);
-     }).catch((error: any) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
 
-   MoviesRouter.get('/moviesByRatingR', (req: Request, res: Response) => {
-  grabMovieIdWithRating("R")
-     .then((data: any) => {
-      res.status(200).send(data);
-     }).catch((error: any) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
-
-   MoviesRouter.get('/moviesByRatingNC-17', (req: Request, res: Response) => {
-  grabMovieIdWithRating("NC-17")
-     .then((data: any) => {
-      res.status(200).send(data);
-     }).catch((error: any) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
-
-  MoviesRouter.post('/moviesByActorOrDirectors', (req: Request, res: Response) => {
-    return grabActorOrDirectorID(req.body.name)
-        .then((data: any) => {
-          return data;
-        })
-        .then((data: any) => {
-       return grabMoviesByActorsOrDirectors(data);
-     }).then((data: any) => {
-       res.send(data);
-     })
-     .catch((error: any) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
+MoviesRouter.post('/moviesByActorOrDirectors', (req: Request, res: Response) => {
+  return grabActorOrDirectorID(req.body.name)
+    .then((data: any) => {
+      return data;
+  })
+    .then((data: any) => {
+      return grabMoviesByActorsOrDirectors(data);
+  }).then((data: any) => {
+    res.send(data);
+  })
+    .catch((error: any) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
 
 
 
@@ -174,25 +145,6 @@ MoviesRouter.get('/:id', (req: Request, res: Response) => {
     });
 });
 
-MoviesRouter.get('/moviesByRatingPG', (req: Request, res: Response) => {
-  grabMovieIdWithRating("PG")
-     .then((data: any) => {
-       res.status(200).send(data);
-     }).catch((error: string) => {
-       console.error(error);
-       res.sendStatus(500);
-     });
-   });
-
-MoviesRouter.get('/moviesByRatingG', (req: Request, res: Response) => {
-    grabMovieIdWithRating("G")
-       .then((data: any) => {
-        res.status(200).send(data);
-       }).catch((error: string) => {
-         console.error(error);
-         res.sendStatus(500);
-       });
-     });
 
 MoviesRouter.post('/search', (req: Request, res: Response) => {
   grabMovieInfo(req.body.movieName)
@@ -201,7 +153,7 @@ MoviesRouter.post('/search', (req: Request, res: Response) => {
     }).catch((error: any) => {
       console.error(error);
       res.sendStatus(500);
-    })
-})
+    });
+});
 
 export default MoviesRouter;
