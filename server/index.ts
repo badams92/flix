@@ -128,6 +128,7 @@ passport.serializeUser((user: any, done: any) => {
   return done(null, user);
 });
 
+
 passport.deserializeUser((user: any, done: any) => {
   return done(null, user)
 });
@@ -159,6 +160,7 @@ passport.authenticate('twitter', { failureRedirect: '/' }),
 //get currently logged in user
 //NOTE: this is currently not being used, app.get('/verify') is sending user data up front
 app.get('/api/users', (req: Request, res: Response) => {
+  console.log('index req.body', req.body)
   return getUserById(req.body)
     .then((data: any) => { res.json({data})})
     .catch((err: any) => { console.log('Unable to retrieve user', err) })
@@ -170,10 +172,17 @@ app.post('/api/users', (req: Request, res: Response) => {
 
 });
 
-app.get('/verify', (req, res) => {
-  if (req.cookies.Flix) {
+interface PassportReq extends Request {
+  passport: { user: {id: number} }
+}
+
+
+app.get('/verify', (req: any, res: Response) => {
+  console.log('req.session', req.user)
+  if (req.cookies.Flix && req.user && req.user?.id) {
     //sends up user to app.tsx, to then be passed down to the children
-    res.status(200).send(req.user)
+    console.log('verify hit')
+    getUserById(req.user.id).then((user) => res.status(200).send(user))
   } else {
     res.json(false);
   }
@@ -182,6 +191,7 @@ app.get('/verify', (req, res) => {
 //reset sessionId back to null
 app.get('/logout', (req: Request, res: Response) => {
   console.log('logged out hit');
+  req.logOut();
   res.clearCookie('Flix');
   res.redirect('/');
 });

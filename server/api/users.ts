@@ -12,7 +12,9 @@ const UsersRouter = Router();
 
 UsersRouter.get('/:id', (req: Request, res: Response) => {
   getUserById(req.body)
-    .then((data: object[]) => { res.send(200).json(data) })
+    .then((data: object) => {
+      console.log('user', data)
+      res.send(200).json(data) })
     .catch((err: object[]) => { res.sendStatus(500) });
 });
 
@@ -31,9 +33,13 @@ UsersRouter.post('/', (req: any, res: any) => {
 //Multi-purpose user patcher
 UsersRouter.patch('/:id', (req: Request, res: Response) => {
     updateUser(req.body, Number(req.params.id))
-        .then(() => {
+    .then(() => getUserById(Number(req.params.id)))
+        .then((user) => {
             console.log('Router: Updated User successfully');
-            res.sendStatus(200);
+            //this should be sending back the updated user
+            req.user = user;
+            res.status(200).send(user);
+            // res.sendStatus(200);
         })
         .catch((err: any) => {
             console.log('Router: failed to update user.', err)

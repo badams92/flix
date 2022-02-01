@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import {
   Avatar,
   Stack,
+  Button,
   Typography,
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import {
   CardMedia,
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -24,15 +26,25 @@ import MovieCards from './MovieCards';
 import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
+import { Grid, IconButton } from '@material-ui/core';
+import { PhotoCamera } from '@material-ui/icons';
+import { styled } from '@material-ui/styles';
+import Tooltip from '@mui/material/Tooltip';
 
-const Profile: FC<any> = ({ user }) => {
 
+
+const Input = styled('input')({
+  display: 'none',
+});
+
+
+const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshUser }) => {
   //User favorites {movies, actors, genres, directors}
   const [favoriteDirectors, setFavoriteDirectors] = useState<any>();
   const [favoriteGenres, setFavoriteGenres] = useState<any>();
   const [currentTab, setCurrentTab] = useState<string>('Favorite Movies');
   //photo states
-  const [userPhoto, setUserPhoto] = useState<any>();
+  // const [userPhoto, setUserPhoto] = useState<any>(user.profile_image_url);
 
 
   const classes = useStyles();
@@ -40,7 +52,7 @@ const Profile: FC<any> = ({ user }) => {
   const tabInfo = [
     { title: 'Favorite Movies', icon: <FavoriteIcon /> },
     { title: 'Favorite Actors', icon: <SettingsAccessibilityIcon /> },
-    { title: 'Favorite Genres', icon: <TheaterComedyIcon /> },
+    // { title: 'Favorite Genres', icon: <TheaterComedyIcon /> },
     { title: 'Favorite Directors', icon: <MovieCreationIcon /> },
     { title: 'Settings', icon: <SettingsApplicationsIcon /> },
   ];
@@ -53,9 +65,9 @@ const Profile: FC<any> = ({ user }) => {
     if (currentTab === 'Favorite Actors') {
       return <ActorCards userId={user.id} />
     }
-    if (currentTab === 'Favorite Genres') {
-      return <GenreCards userId={user.id} />
-    }
+    // if (currentTab === 'Favorite Genres') {
+    //   return <GenreCards userId={user.id} />
+    // }
     if (currentTab === 'Favorite Directors') {
       return <DirectorCards userId={user.id} />
     }
@@ -70,94 +82,9 @@ const Profile: FC<any> = ({ user }) => {
 
 
 
-  //put in functions for handling the photo changes here, then pass the click handler for those down to user prefs
-
-  //Used to get all favorites upon initial load.
-  // const getAllFavorites = (userId: number) => {
-  //   const getDirectors = axios.get(`/api/users/directors/${userId}`);
-  //   const getGenres = axios.get(`/api/users/genres/${userId}`);
-
-  //   axios.all([getActors, getDirectors, getGenres])
-  //     .then(responseArr => {
-  //       setFavoriteDirectors(responseArr[1].data.directors);
-  //       setFavoriteGenres(responseArr[2].data.genres);
-  //       console.log('Favorite directors', responseArr[1].data.directors)
-  //       console.log('Favorite genres', responseArr[2].data.genres)
-
-  //     }).catch((err) => { console.log('Unable to retrieve user favorites', err); })
-  // };
-
-  // useEffect(() => {
-  //   getAllFavorites(user.id);
-  // }, []);
-
-
-  //INDIVIDUAL UPDATE FUNCTIONS
-  //used for removing user favorites from the page.
-  /*
-
-
-  const getFavActors = (userId: number) => {
-    axios.get(`/api/actors/${userId}`)
-      .then(({data}) => {
-        setFavoriteActors(data)})
-      .catch(() => console.log('Failed to get favorite actors'));
-  };
   useEffect(() => {
-    getFavActors(user?.id);
-  }, [favoriteActors])
-
-
-  const getFavDirectors = (userId: number) => {
-    axios.get(`/api/directors/${userId}`)
-    .then(({data}) => {
-      setFavoriteDirectors(data)})
-    .catch(() => console.log('Failed to get favorite directors'));
-  };
-  useEffect(() => {
-    getFavDirectors(user?.id);
-  }, [favoriteDirectors])
-
-
-  const getFavGenres = (userId: number) => {
-    axios.get(`/api/genres/${userId}`)
-    .then(({data}) => {
-      setFavoriteGenres(data)})
-    .catch(() => console.log('Failed to get favorite genres'));
-  };
-  useEffect(() => {
-    getFavGenres(user?.id);
-  }, [favoriteGenres])
-
-    //TODO: Movies needs backend routes for user favorites
-  const getFavMovies = (userId: number) => {
-  axios.get(`/api/movies/${userId}`)
-  .then(({data}) => {
-    setFavoriteMovies(data[userId])})
-  .catch(() => console.log('Failed to get favorite movies'));
-  };
-  useEffect(() => {
-  getFavMovies(user?.id);
-  }, [favoriteMovies])
-
-  useEffect(() => {
-  //setTimeout b/c will throw 'unmounted' error without it.
-  setTimeout(() => {
-    setuser(children);
-  })
-  }, [children]);
-
-
-  // is there a way to set this up so that depending on whatever is clicked, that clicked item will be identified and passed
-  // into the axios put request, instead of creating a request for each item type
-  const removeFavorite = (num:any) => {
-  console.log('hello');
-  console.log('target title', num);
-  axios.delete(`/api/users/movies/${user.id}`)
-  .then(() => { console.log('Removed favorite')})
-  .catch(() => {console.log('Failed to remove')})
-  };
-  */
+    refreshUser();
+  }, [])
 
   return (
 
@@ -167,11 +94,58 @@ const Profile: FC<any> = ({ user }) => {
           <Card className={classes.root}>
             <div style={{ height: '50vh' }}>
               <CardMedia className={classes.media} image={user.profile_cover_photo_url} title="Cover" />
+              <div className={classes.media} style={{ maxHeight: '175px' }}>
+                <div className={classes.main}>
+                  <Avatar
+                    title='profile-photo-container'
+                    sx={{ width: 250, height: 250 }}
+                    src={user.profile_image_url}
+                    className={classes.profileImage} />
+                </div>
+              </div>
             </div>
-            <div className={classes.main} style={{ maxHeight: '175px' }}>
-              <Avatar sx={{ width: 250, height: 250 }}
-                src={user.profile_image_url} className={classes.profileImage} />
-            </div>
+
+            <Grid
+              container
+              direction='row'
+              style={{ marginTop: '0.5rem' }}
+            >
+              <Grid item className={classes.main}>
+                <label htmlFor="icon-button-file">
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    onChange={handleProfilePhoto} />
+                  <Tooltip title='Upload a new profile photo' placement='bottom' arrow>
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <PhotoCamera />
+                    </IconButton>
+                  </Tooltip>
+                </label>
+              </Grid>
+              <Grid item>
+                <label htmlFor="contained-button-file">
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={handleCoverPhoto} />
+                  <Tooltip title='Upload a new cover photo' placement='bottom' arrow>
+                    <Button variant="contained" component="span" startIcon={<AddPhotoAlternateIcon />}>
+                      Edit cover photo
+                    </Button>
+                  </Tooltip>
+                </label>
+              </Grid>
+            </Grid>
+
+
+
 
             <Typography
               align={"center"}
@@ -181,12 +155,12 @@ const Profile: FC<any> = ({ user }) => {
               {user.username}
             </Typography>
             {!user.twitter_user_name ? null :
-            <Typography className={classes.userName}
-              align={"center"}
-              variant="h6"
-            >
-              {`@${user.twitter_user_name}`}
-            </Typography>}
+              <Typography className={classes.userName}
+                align={"center"}
+                variant="h6"
+              >
+                {`@${user.twitter_user_name}`}
+              </Typography>}
 
             <CardContent className={classes.contentContainer}>
 
