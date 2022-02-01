@@ -141,7 +141,6 @@ app.get('/auth/google/callback',
 passport.authenticate('google', { failureRedirect: '/' }),
 (req: Request, res: Response) => {
   res.cookie('Flix', req.user)
-  // console.log('requested user google', req.user);
   res.redirect('/');
 });
 
@@ -152,7 +151,6 @@ app.get('/auth/twitter/callback',
 passport.authenticate('twitter', { failureRedirect: '/' }),
 (req: Request, res: Response) => {
   res.cookie('Flix', req.user)
-  // console.log('requested user twitter', req.user);
   res.redirect('/');
 });
 //End of Passport
@@ -160,7 +158,6 @@ passport.authenticate('twitter', { failureRedirect: '/' }),
 //get currently logged in user
 //NOTE: this is currently not being used, app.get('/verify') is sending user data up front
 app.get('/api/users', (req: Request, res: Response) => {
-  console.log('index req.body', req.body)
   return getUserById(req.body)
     .then((data: any) => { res.json({data})})
     .catch((err: any) => { console.log('Unable to retrieve user', err) })
@@ -178,10 +175,8 @@ interface PassportReq extends Request {
 
 
 app.get('/verify', (req: any, res: Response) => {
-  console.log('req.session', req.user)
   if (req.cookies.Flix && req.user && req.user?.id) {
     //sends up user to app.tsx, to then be passed down to the children
-    console.log('verify hit')
     getUserById(req.user.id).then((user) => res.status(200).send(user))
   } else {
     res.json(false);
