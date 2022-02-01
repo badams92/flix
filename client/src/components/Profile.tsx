@@ -25,6 +25,17 @@ import MovieCards from './MovieCards';
 import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
+import { IconButton } from '@material-ui/core';
+import { PhotoCamera } from '@material-ui/icons';
+import { styled } from '@material-ui/styles';
+import Tooltip from '@mui/material/Tooltip';
+
+
+
+const Input = styled('input')({
+  display: 'none',
+});
+
 
 const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshUser }) => {
   //User favorites {movies, actors, genres, directors}
@@ -69,6 +80,7 @@ const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshU
 
 
 
+
   useEffect(() => {
     refreshUser();
   }, [])
@@ -81,57 +93,51 @@ const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshU
           <Card className={classes.root}>
             <div style={{ height: '50vh' }}>
               <CardMedia className={classes.media} image={user.profile_cover_photo_url} title="Cover" />
-            </div>
-            <div className={classes.main} style={{ maxHeight: '175px' }}>
-              <Avatar sx={{ width: 250, height: 250 }}
-                src={user.profile_image_url} className={classes.profileImage} />
-            </div>
-
-
-            <h3>Upload a profile photo</h3>
-            <form
-              encType="multipart/form-data"
-            >
-              <input
-                accept='image/*'
-                type="file"
-                id='select-image'
-                onChange={handleProfilePhoto}
-              />
-              <label htmlFor='select-image'>
-              <Button
-                variant='contained'
-                color='primary'
-                type='submit'
-                onClick={refreshUser}
-              >
-                Submit photo
-              </Button>
+              {/* <div className={classes.media} style={{ maxHeight: '175px' }}>
+                <label htmlFor="contained-button-file">
+                <Input
+                  accept="image/*"
+                  id="contained-button-file"
+                  multiple type="file"
+                  onChange={handleCoverPhoto} />
+                <Tooltip title='Upload a new cover photo' placement='right'>
+                  <Button variant="contained" component="span">
+                    Upload
+                  </Button>
+                </Tooltip>
               </label>
-            </form>
+              </div> */}
+
+            </div>
+            <div className={classes.main}>
+              <Avatar
+                title='profile-photo-container'
+                sx={{ width: 250, height: 250 }}
+                src={user.profile_image_url}
+                className={classes.profileImage} />
+            </div>
 
 
-            <h3>Upload a cover photo</h3>
-            <form
-              encType="multipart/form-data"
-            >
-              <input
-                accept='image/*'
-                type="file"
-                id='select-image'
-                onChange={handleCoverPhoto}
-              />
-              <label htmlFor='select-image'>
-              <Button
-                variant='contained'
-                color='primary'
-                type='submit'
-                onClick={refreshUser}
-              >
-                Submit photo
-              </Button>
+            {/* <div className={classes.main}>
+              <label htmlFor="icon-button-file">
+                <Input
+                  accept="image/*"
+                  id="icon-button-file"
+                  type="file"
+                  onChange={handleProfilePhoto} />
+                <Tooltip title='Upload a new profile photo' placement='right'>
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                </Tooltip>
               </label>
-            </form>
+            </div> */}
+
+
 
             <Typography
               align={"center"}

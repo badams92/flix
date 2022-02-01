@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => {
       "& .MuiButtonBase-root.MuiTab-root": {
         background: theme.palette.background.paper,
         color: theme.palette.text.primary,
-      }
+      },
     },
     media: {
       height: '50vh',
@@ -28,7 +28,10 @@ const useStyles = makeStyles((theme) => {
       border: `6px solid ${theme.palette.background.paper}`,
       margin: "auto",
       background: theme.palette.background.paper
-
+    },
+    profileImageButton: {
+      position: 'relative',
+      background: 'rgba(255, 255, 25, 1)'
     },
     profileInfoContainer: {
       position: "relative",
