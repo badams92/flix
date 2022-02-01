@@ -26,14 +26,14 @@ import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
 
-const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
+const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
   console.log('photo', photo)
   //User favorites {movies, actors, genres, directors}
   const [favoriteDirectors, setFavoriteDirectors] = useState<any>();
   const [favoriteGenres, setFavoriteGenres] = useState<any>();
   const [currentTab, setCurrentTab] = useState<string>('Favorite Movies');
   //photo states
-  const [userPhoto, setUserPhoto] = useState<any>(photo);
+  // const [userPhoto, setUserPhoto] = useState<any>(user.profile_image_url);
 
 
   const classes = useStyles();
@@ -68,36 +68,15 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
     return <MovieCards userId={user.id} />
   };
 
-  // useEffect(() => {
-  //   setUserPhoto(user.profile_image_url)
-  // }, [])
 
-
-  //put in functions for handling the photo changes here, then pass the click handler for those down to user prefs
-
-  // const handleProfilePhoto = (e: SyntheticEvent) => {
-  //   e.preventDefault();
-  //   const file = (e.target as HTMLInputElement).files![0];
-  //   setUserPhoto(URL.createObjectURL(file));
-  //   const data = new FormData();
-  //   data.append('image', file, file.name);
-  //   axios.post('/api/photos/imgUpload', data, {
-  //     headers: { 'Content-Type': 'multipart/form-data' }
-  //   })
-  //     .then(({ data }) => {
-  //       axios.patch(`/api/users/${user.id}`, { profile_image_url: data })
-  //         .then(() => {
-  //           setUserPhoto(data);
-  //           console.log('updated profile photo')
-  //         });
-  //     })
-  //     .catch((err: any) => {
-  //       console.error(err);
-  //     });
+  // const updatePhotoHandler = (photo: string) => {
+  //   setUserPhoto(photo);
   // };
 
   useEffect(() => {
-    setUserPhoto(photo)
+    console.log('user refreshed');
+    refreshUser();
+    // updatePhotoHandler(photo)
   }, [])
 
   return (
@@ -111,7 +90,7 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
             </div>
             <div className={classes.main} style={{ maxHeight: '175px' }}>
               <Avatar sx={{ width: 250, height: 250 }}
-                src={userPhoto} className={classes.profileImage} />
+                src={user.profile_image_url} className={classes.profileImage} />
             </div>
 
 
@@ -125,9 +104,21 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover }) => {
               encType="multipart/form-data"
             >
               <input
+                accept='image/*'
                 type="file"
+                id='select-image'
                 onChange={handlePhoto}
               />
+              <label htmlFor='select-image'>
+              <Button
+                variant='contained'
+                color='primary'
+                type='submit'
+                onClick={refreshUser}
+              >
+                Submit photo
+              </Button>
+              </label>
             </form>
 
 

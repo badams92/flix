@@ -36,7 +36,7 @@ db.authenticate()
   .then(() => console.log('connected to database'))
   .catch((err: object) => console.log(err, 'error hitting'));
 
-interface UserObject {
+export interface UserObject {
   id: number;
   username: string;
   email_Oauth: string;
@@ -388,8 +388,18 @@ interface userObj {
 }
 
 export const getUserById = async (userId: number) => {
+  console.log('userId:', userId)
   return User.findByPk(userId);
 };
+
+// export const getUserById = async (id: any) => {
+//   try {
+//     const oneUser = await User.findOne({ where: { id: id }})
+//     return oneUser;
+//   }
+//   catch (err) { console.error('Unable to remove movie from user favorites.', err) }
+// }
+
 
 interface AddUserArgs {
   displayName: string;
@@ -448,7 +458,7 @@ export const updateUser = async (updateElement: updateElement, userId: number) =
   //ex: updateElement = { number: newNumber }, to update property 'number' on the user object where id = userId
   try {
     const updatedUser = await User.update(updateElement, { where: { id: userId }})
-    console.log('Index: Updated User')
+    console.log('Index: Updated User', updatedUser) //returns [1] when updated
     return updatedUser;
   }
   catch(err) { console.error('Index: failed to update user.')}
@@ -675,6 +685,7 @@ export const grabActorOrDirectorID = (actorOrDirector: string) => {
 export const getMovieById = (id: number) => {
   return Movies.findByPk(id);
 };
+
 
 export default User;
 
