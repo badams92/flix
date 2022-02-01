@@ -83,7 +83,7 @@ const Discover:FC<any> = ({user}) => {
             setMovieList(data.data)
             const randomNum = Math.floor(Math.random() * 250);
             setCurrentMovie(data.data[randomNum])
-            getTweets();
+            getTweets(data.data[randomNum])
           })
     }
 
@@ -99,13 +99,13 @@ const Discover:FC<any> = ({user}) => {
         })
           .then(() => {
             getRandomMovie();
-            getTweets();
           })
       }
     }
 
 
-    const getTweets = () => {
+    const getTweets = (movie: any) => {
+      console.log('curr movie', movie)
       const options: any = {
         url: '/api/twitter/tweets',
         method: 'GET',
@@ -114,7 +114,7 @@ const Discover:FC<any> = ({user}) => {
             'Content-Type': 'application/json'
           },
         params: {
-          title: currentMovie?.title
+          title: movie?.title
         }
     }
     axios(options)
@@ -126,8 +126,7 @@ const Discover:FC<any> = ({user}) => {
 
       useEffect(() => {
         getRandomMovie();
-        setCurrentUser(user);
-        getTweets();
+        setCurrentUser(user);        
       }, [])
       return (
         <div>
@@ -151,8 +150,10 @@ const Discover:FC<any> = ({user}) => {
               </iframe>
               </Card>
 
-              <Grid item xs='auto'>
-                <Typography variant='h4' align='center'>
+              <Grid item xs='auto'
+                style={{backgroundColor: '#A4A4A4'}}
+              >
+                <Typography variant='h4' align='left'>
                 {!!currentMovie ? currentMovie.description : ''}
                 </Typography>
               </Grid>
@@ -167,7 +168,7 @@ const Discover:FC<any> = ({user}) => {
         <Button
           variant="contained"
           color="secondary"
-          style={{backgroundColor: 'purple'}}
+          style={{backgroundColor: '#CBAA1A'}}
           onClick={() => handleNextClick()}
         >
             Get a New Movie
@@ -175,7 +176,7 @@ const Discover:FC<any> = ({user}) => {
         <Button
           variant="contained"
           color="secondary"
-          style={{backgroundColor: 'purple', float: 'right'}}
+          style={{backgroundColor: '#CBAA1A', float: 'right'}}
           onClick={() => handleSaveClick()}
         >
             Save movie

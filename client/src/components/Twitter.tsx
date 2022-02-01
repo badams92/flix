@@ -77,7 +77,7 @@ const Twitter: FC = (props: any) => {
             }
           />
           <Button 
-          style={{backgroundColor: 'purple'}}
+          style={{backgroundColor: '#CBAA1A'}}
           variant="contained" color="secondary" onClick={(e: any) => handleTwitterSearch(e)}>Search</Button>
         </form>
       </div>
