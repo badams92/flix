@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => {
     contentContainer: {
       position: "relative",
       background: theme.palette.background.paper
-    }
+    },
   };
 })
 export default useStyles;

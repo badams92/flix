@@ -49,7 +49,25 @@ const App: FC = () => {
       });
   };
 
-
+  const handleCoverPhoto = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const file = (e.target as HTMLInputElement).files![0];
+    // setUserPhoto(URL.createObjectURL(file));
+    const data = new FormData();
+    data.append('image', file, file.name);
+    axios.post('/api/photos/imgUpload', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+      .then(({ data }) => {
+        axios.patch(`/api/users/${currentUser.id}`, { profile_cover_photo_url: data })
+          .then(( data: any ) => {
+            getLoggedInUser();
+          })
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
 
   const getLoggedInUser = () => {
     axios.get('/verify')
@@ -105,7 +123,8 @@ const App: FC = () => {
                         photo={userPhoto}
                         cover={currentUser.profile_cover_photo_url}
                         refreshUser={getLoggedInUser}
-                        handlePhoto={handleProfilePhoto} />} />;
+                        handleProfilePhoto={handleProfilePhoto}
+                        handleCoverPhoto={handleCoverPhoto} />} />;
                   })}
                   <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />
                   <Route path="*" element={<h2>404: Not found</h2>} />

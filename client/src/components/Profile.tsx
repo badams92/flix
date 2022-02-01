@@ -26,8 +26,7 @@ import ActorCards from './ActorCards';
 import GenreCards from './GenreCards';
 import DirectorCards from './DirectorCards';
 
-const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
-  console.log('photo', photo)
+const Profile: FC<any> = ({ user, handleProfilePhoto, handleCoverPhoto, refreshUser }) => {
   //User favorites {movies, actors, genres, directors}
   const [favoriteDirectors, setFavoriteDirectors] = useState<any>();
   const [favoriteGenres, setFavoriteGenres] = useState<any>();
@@ -69,14 +68,9 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
   };
 
 
-  // const updatePhotoHandler = (photo: string) => {
-  //   setUserPhoto(photo);
-  // };
 
   useEffect(() => {
-    console.log('user refreshed');
     refreshUser();
-    // updatePhotoHandler(photo)
   }, [])
 
   return (
@@ -95,11 +89,6 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
 
 
             <h3>Upload a profile photo</h3>
-            {!!photo && (
-              <div>
-                <img alt="not found" width={"250px"} src={photo} />
-              </div>
-            )}
             <form
               encType="multipart/form-data"
             >
@@ -107,7 +96,7 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
                 accept='image/*'
                 type="file"
                 id='select-image'
-                onChange={handlePhoto}
+                onChange={handleProfilePhoto}
               />
               <label htmlFor='select-image'>
               <Button
@@ -121,6 +110,28 @@ const Profile: FC<any> = ({ user, handlePhoto, photo, cover, refreshUser }) => {
               </label>
             </form>
 
+
+            <h3>Upload a cover photo</h3>
+            <form
+              encType="multipart/form-data"
+            >
+              <input
+                accept='image/*'
+                type="file"
+                id='select-image'
+                onChange={handleCoverPhoto}
+              />
+              <label htmlFor='select-image'>
+              <Button
+                variant='contained'
+                color='primary'
+                type='submit'
+                onClick={refreshUser}
+              >
+                Submit photo
+              </Button>
+              </label>
+            </form>
 
             <Typography
               align={"center"}

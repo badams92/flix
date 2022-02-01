@@ -388,7 +388,7 @@ interface userObj {
 }
 
 export const getUserById = async (userId: number) => {
-  console.log('userId:', userId)
+  console.log('userIdd:', userId)
   return User.findByPk(userId);
 };
 
