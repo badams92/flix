@@ -14,7 +14,7 @@ const SingleTweet: FC<TweetProps> = ({ text }) => {
       marginBottom: '1rem',
       maxWidth: '768px',
       borderRadius: '0.25rem',
-      backgroundColor: '#BE81F7'
+      backgroundColor: '#F2E5AA'
     }}>
       <Typography>
         {text}
