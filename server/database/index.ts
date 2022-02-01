@@ -34,7 +34,7 @@ const db = new Sequelize({
 
 db.authenticate()
   .then(() => console.log('connected to database'))
-  .catch((err: object) => console.log(err, 'error hitting'));
+  .catch((err: object) => console.error(err, 'error hitting'));
 
 export interface UserObject {
   id: number;
@@ -388,7 +388,6 @@ interface userObj {
 }
 
 export const getUserById = async (userId: number) => {
-  console.log('userIdd:', userId)
   return User.findByPk(userId);
 };
 
@@ -445,7 +444,7 @@ export const addUser = async (user: AddUserArgs): Promise<UserObject | void | un
 
   }
   catch (err) {
-    console.log('Unable to find or create user.', err);
+    console.error('Unable to find or create user.', err);
   }
 };
 
@@ -458,7 +457,7 @@ export const updateUser = async (updateElement: updateElement, userId: number) =
   //ex: updateElement = { number: newNumber }, to update property 'number' on the user object where id = userId
   try {
     const updatedUser = await User.update(updateElement, { where: { id: userId }})
-    console.log('Index: Updated User', updatedUser) //returns [1] when updated
+    //returns [1] when updated
     return updatedUser;
   }
   catch(err) { console.error('Index: failed to update user.')}
@@ -471,7 +470,7 @@ export const addFavoriteMovie = async (userId: any, movie_id: any) => {
         movieId: movie_id
       })
   }
-  catch (err) { console.log('Unable to add favorite movie to user') };
+  catch (err) { console.error('Unable to add favorite movie to user') };
 };
 
 export const addMovie = async (movie: movieObj, userId?: number) => {
@@ -624,7 +623,6 @@ export const addGenre = async (genre: string, movieId?: number, userId?: number)
 export const grabMovieIdWithRating = async (rating: string) => {
   return await axios.get(`https://imdb-api.com/API/AdvancedSearch/${IMDB_KEY}?title_type=tv_movie&certificates=us:${rating}`)
     .then(({data}: any) => {
-    // console.log(data);
     let movieIdArray = []
     for (let i = 0; i < data.results.length; i++) {
       let movieId = data.results[i].id;
@@ -635,11 +633,9 @@ export const grabMovieIdWithRating = async (rating: string) => {
     .then((data: any) => {
     const getMovieInfo = async () => {
       const movieInfoArray = [];
-      // console.log(data);
       for (let i = 0; i < 50; i++) {
            movieInfoArray.push(await axios.get(`https://imdb-api.com/en/API/Trailer/${IMDB_KEY}/${data[i]}`));
       }
-      // console.log(movieInfoArray);
       return movieInfoArray;
     }
     return getMovieInfo()
@@ -650,10 +646,9 @@ export const grabMovieIdWithRating = async (rating: string) => {
       let movie = data[i].data;
       movieData.push(movie);
     }
-    // console.log(movieData);
     return movieData;
   }).catch((error: any) => {
-    console.log(error);
+    console.error(error);
   });
 }
 
@@ -661,25 +656,23 @@ export const grabMoviesByActorsOrDirectors = (actorID: string) => {
     return axios.get(`https://imdb-api.com/API/Name/${IMDB_KEY}/${actorID}`)
       .then(({data}: any) => {
         let moviesArray = []
-        // console.log(data);
         for (let i = 0; i < data.knownFor.length; i++) {
               let otherMovies = data.knownFor[i]
               moviesArray.push(otherMovies);
         }
         return moviesArray;
       }).catch((error: any) => {
-        console.log(error);
+        console.error(error);
       });
 }
 
 export const grabActorOrDirectorID = (actorOrDirector: string) => {
   return axios.get(`https://imdb-api.com/en/API/SearchAll/${IMDB_KEY}/${actorOrDirector}`)
    .then(({data}: any) => {
-    //  console.log(data.results[0].id);
     let actorOrDirectorID = data.results[0].id;
     return actorOrDirectorID;
    }).catch((error: any) => {
-    console.log(error);
+    console.error(error);
    });
 }
 export const getMovieById = (id: number) => {
