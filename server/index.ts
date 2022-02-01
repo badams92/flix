@@ -128,6 +128,7 @@ passport.serializeUser((user: any, done: any) => {
   return done(null, user);
 });
 
+
 passport.deserializeUser((user: any, done: any) => {
   return done(null, user)
 });
@@ -140,7 +141,6 @@ app.get('/auth/google/callback',
 passport.authenticate('google', { failureRedirect: '/' }),
 (req: Request, res: Response) => {
   res.cookie('Flix', req.user)
-  // console.log('requested user google', req.user);
   res.redirect('/');
 });
 
@@ -151,7 +151,6 @@ app.get('/auth/twitter/callback',
 passport.authenticate('twitter', { failureRedirect: '/' }),
 (req: Request, res: Response) => {
   res.cookie('Flix', req.user)
-  // console.log('requested user twitter', req.user);
   res.redirect('/');
 });
 //End of Passport
@@ -170,10 +169,15 @@ app.post('/api/users', (req: Request, res: Response) => {
 
 });
 
-app.get('/verify', (req, res) => {
-  if (req.cookies.Flix) {
+interface PassportReq extends Request {
+  passport: { user: {id: number} }
+}
+
+
+app.get('/verify', (req: any, res: Response) => {
+  if (req.cookies.Flix && req.user && req.user?.id) {
     //sends up user to app.tsx, to then be passed down to the children
-    res.status(200).send(req.user)
+    getUserById(req.user.id).then((user) => res.status(200).send(user))
   } else {
     res.json(false);
   }
@@ -182,6 +186,7 @@ app.get('/verify', (req, res) => {
 //reset sessionId back to null
 app.get('/logout', (req: Request, res: Response) => {
   console.log('logged out hit');
+  req.logOut();
   res.clearCookie('Flix');
   res.redirect('/');
 });

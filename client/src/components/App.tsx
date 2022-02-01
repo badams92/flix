@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, SyntheticEvent } from 'react';
 import Paths from '../Routes';
 import NavigationBar from './NavigationBar';
 import { Routes, Route } from 'react-router-dom';
 import MovieDetail from './MovieDetail';
 import axios from 'axios';
 import Login from './Login';
+// import PhotoHandler from './PhotoHandler';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Switch from '@mui/material/Switch';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,12 +18,56 @@ const App: FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
   const [currentTheme, setCurrentTheme] = useState<boolean>(false);
 
+  const [userPhoto, setUserPhoto] = useState<any>(currentUser?.profile_image_url);
+  const [coverPhoto, setCoverPhoto] = useState<any>(currentUser?.profile_cover_photo_url);
+
 
   const theme = createTheme({
     palette: {
       type: currentTheme ? 'dark' : 'light',
     },
   })
+
+  //image submission handler
+  const handleProfilePhoto = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const file = (e.target as HTMLInputElement).files![0];
+    // setUserPhoto(URL.createObjectURL(file));
+    const data = new FormData();
+    data.append('image', file, file.name);
+    axios.post('/api/photos/imgUpload', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+      .then(({ data }) => {
+        axios.patch(`/api/users/${currentUser.id}`, { profile_image_url: data })
+          .then(( data: any ) => {
+            getLoggedInUser();
+          })
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
+
+  const handleCoverPhoto = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const file = (e.target as HTMLInputElement).files![0];
+    // setUserPhoto(URL.createObjectURL(file));
+    const data = new FormData();
+    data.append('image', file, file.name);
+    axios.post('/api/photos/imgUpload', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+      .then(({ data }) => {
+        axios.patch(`/api/users/${currentUser.id}`, { profile_cover_photo_url: data })
+          .then(( data: any ) => {
+            getLoggedInUser();
+          })
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
 
   const getLoggedInUser = () => {
     axios.get('/verify')
@@ -39,7 +84,6 @@ const App: FC = () => {
     axios.patch(`/api/users/${currentUser.id}`, { theme: !currentTheme })
       .then(() => {
         setCurrentTheme(!currentTheme);
-
       })
       .catch((err: any) => { console.error('Unable to update user theme') })
   }
@@ -47,6 +91,7 @@ const App: FC = () => {
   const handleTheme = () => {
     setUserTheme();
   }
+
 
   // currentUser.photos[0].value
   //this only needs to run once, will update when the user logs out and is redirected to login page.
@@ -65,15 +110,21 @@ const App: FC = () => {
             <Paper style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)', backdropFilter: 'blur(2px)' }}>
               <CssBaseline />
               <NavigationBar
-              userImage={currentUser.profile_image_url}
-              themeSwitch={<Switch checked={currentTheme} onChange={() => handleTheme()} />} />
+                userImage={currentUser.profile_image_url}
+                themeSwitch={<Switch checked={currentTheme} onChange={() => handleTheme()} />} />
               <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
                 <Routes>
                   {Paths.map((route: any, index: number) => {
                     return <Route
                       path={route.path}
                       key={index}
-                      element={<route.component user={currentUser} />} />;
+                      element={<route.component
+                        user={currentUser}
+                        photo={userPhoto}
+                        cover={currentUser.profile_cover_photo_url}
+                        refreshUser={getLoggedInUser}
+                        handleProfilePhoto={handleProfilePhoto}
+                        handleCoverPhoto={handleCoverPhoto} />} />;
                   })}
                   <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />
                   <Route path="*" element={<h2>404: Not found</h2>} />

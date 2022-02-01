@@ -1,9 +1,15 @@
 import axios from 'axios';
 import React, { FC, useState, useEffect, SyntheticEvent } from 'react';
 import Button from '@mui/material/Button';
-import { Grid } from '@material-ui/core';
+import { Grid, Tooltip } from '@material-ui/core';
+import { styled } from '@material-ui/styles';
 
-const UserPreferences: FC<any> = ({ userId }: { userId: number }) => {
+
+const Input = styled('input')({
+  display: 'none',
+});
+
+const UserPreferences: FC<any> = ({ userId }: { userId: number }, {handleCoverPhoto}) => {
 
   const [currentUser, setCurrentUser] = useState<any>(userId);
   const [age, setAge] = useState<number>();
@@ -117,25 +123,21 @@ const UserPreferences: FC<any> = ({ userId }: { userId: number }) => {
 
       </Grid>
 
-      <h3>Upload a profile photo</h3>
-      {!!userPhoto && (
-        <div>
-          <img alt="not found" width={"250px"} src={userPhoto} />
-          <br />
-          <Button onClick={handleProfileRemove}>Remove</Button>
-        </div>
-      )}
-      <br />
-      <br />
-      <form
-        encType="multipart/form-data"
-      >
-        <input
-          type="file"
-          name="myImage"
-          onChange={handleProfilePhotoChange}
-        />
-      </form>
+      {/* <div style={{ maxHeight: '175px' }}>
+        <label htmlFor="contained-button-file">
+          <Input
+            accept="image/*"
+            id="contained-button-file"
+            multiple type="file"
+            onChange={handleCoverPhoto} />
+          <Tooltip title='Upload a new cover photo' placement='right'>
+            <Button variant="contained" component="span">
+              Upload
+            </Button>
+          </Tooltip>
+        </label>
+      </div> */}
+
       <h3>Upload a cover photo</h3>
       {!!coverPhoto && (
         <div>
