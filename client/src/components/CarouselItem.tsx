@@ -43,7 +43,7 @@ const CarouselItem: FC<CarouselItemProps> = ({ item }: { item: MovieObj }) => {
           component="img"
           height='175px'
           width='100%'
-          src={thumbnailUrl}
+          src={thumbnailUrl || '/assets/flixar.png'}
           title="movie trailer"
         />
         <CardHeader

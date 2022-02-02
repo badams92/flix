@@ -71,8 +71,8 @@ const Home: FC = (props: any) => {
     genres.forEach(((genre: Genre) => {
       axios.get('/api/movies/genres/' + genre.id)
         .then(({ data }) => movies[genre.genre] = data)
-        .catch(() => console.log('failed to get movies by genre'))
-        .finally(() => setGenreMovies(movies));
+        .then(() => setGenreMovies(movies))
+        .catch(() => console.log('failed to get movies by genre'));
     }));
   };
 
@@ -81,8 +81,8 @@ const Home: FC = (props: any) => {
     actors.forEach(((actor: Actor) => {
       axios.get('/api/movies/actors/' + actor.id)
         .then(({ data }) => movies[actor.actor_name] = data)
-        .catch(() => console.log('failed to get movies by Actor'))
-        .finally(() => setActorsMovies(movies));
+        .then(() => setActorsMovies(movies))
+        .catch(() => console.log('failed to get movies by Actor'));
     }));
   };
 
@@ -91,8 +91,8 @@ const Home: FC = (props: any) => {
     directors.forEach(((director: Director) => {
       axios.get('/api/movies/directors/' + director.id)
         .then(({ data }) => movies[director.director_name] = data)
-        .catch(() => console.log('failed to get movies by director'))
-        .finally(() => setDirectorsMovies(movies));
+        .then(() => setDirectorsMovies(movies))
+        .catch(() => console.log('failed to get movies by director'));
     }));
   };
 
