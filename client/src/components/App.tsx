@@ -10,7 +10,7 @@ import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Switch from '@mui/material/Switch';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-
+import MaterialUISwitch from '../styles/switch.styles';
 import styles from '../styles/styles';
 
 
@@ -40,7 +40,7 @@ const App: FC = () => {
     })
       .then(({ data }) => {
         axios.patch(`/api/users/${currentUser.id}`, { profile_image_url: data })
-          .then(( data: any ) => {
+          .then((data: any) => {
             getLoggedInUser();
           })
       })
@@ -60,7 +60,7 @@ const App: FC = () => {
     })
       .then(({ data }) => {
         axios.patch(`/api/users/${currentUser.id}`, { profile_cover_photo_url: data })
-          .then(( data: any ) => {
+          .then((data: any) => {
             getLoggedInUser();
           })
       })
@@ -111,7 +111,7 @@ const App: FC = () => {
               <CssBaseline />
               <NavigationBar
                 userImage={currentUser.profile_image_url}
-                themeSwitch={<Switch checked={currentTheme} onChange={() => handleTheme()} />} />
+                themeSwitch={<MaterialUISwitch checked={currentTheme} onChange={() => handleTheme()} />} />
               <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
                 <Routes>
                   {Paths.map((route: any, index: number) => {
@@ -126,7 +126,7 @@ const App: FC = () => {
                         handleProfilePhoto={handleProfilePhoto}
                         handleCoverPhoto={handleCoverPhoto} />} />;
                   })}
-                  <Route path='movies/:id' element={<MovieDetail children={currentUser}/>} />
+                  <Route path='movies/:id' element={<MovieDetail children={currentUser} />} />
                   <Route path="*" element={<h2>404: Not found</h2>} />
                 </Routes>
               </div>
