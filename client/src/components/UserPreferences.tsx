@@ -1,20 +1,25 @@
 import axios from 'axios';
 import React, { FC, useState, useEffect, SyntheticEvent } from 'react';
 import Button from '@mui/material/Button';
-import { Grid, Tooltip } from '@material-ui/core';
+import { Grid, IconButton, Tooltip } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
+import useStyles from "../styles/profile.styles";
+import { PhotoCamera } from '@material-ui/icons';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 
 const Input = styled('input')({
   display: 'none',
 });
 
-const UserPreferences: FC<any> = ({ userId }: { userId: number }, {handleCoverPhoto}) => {
+const UserPreferences: FC<any> = ({ userId }: { userId: number }, { handleProfilePhoto, handleCoverPhoto, refreshUser }) => {
 
   const [currentUser, setCurrentUser] = useState<any>(userId);
   const [age, setAge] = useState<number>();
   const [userPhoto, setUserPhoto] = useState<any>();
   const [coverPhoto, setCoverPhoto] = useState<any>();
+
+  const classes = useStyles();
 
   const handleAgeChange = (e: SyntheticEvent) => {
     e.preventDefault;
@@ -105,59 +110,49 @@ const UserPreferences: FC<any> = ({ userId }: { userId: number }, {handleCoverPh
 
 
   return (
-    <>
-      <div>
-        <img src={coverPhoto} />
-        <h3>Set age: {!currentUser ? null : currentUser.age}</h3>
-        <form>
-          <input
-            type='number'
-            name='myAge'
-            onChange={handleAgeChange}
-          />
-        </form>
-        <Button onClick={handleRemoveAge}>Submit age</Button>
-      </div>
-
-      <Grid>
-
+    <Grid
+      container
+      spacing={3}
+      justifyContent='center'
+      alignItems='center'
+      direction='row'
+      style={{ marginTop: '0.5rem' }}
+    >
+      <Grid item className={classes.main}>
+        <label htmlFor="icon-button-file">
+          <Input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            onChange={handleProfilePhoto} />
+          <Tooltip title='Upload a new profile photo' placement='bottom' arrow>
+            <Button
+              color="primary"
+              aria-label="upload picture"
+              variant='contained'
+              component="span"
+              startIcon={<PhotoCamera />}
+            >
+              Edit Profile Photo
+            </Button>
+          </Tooltip>
+        </label>
       </Grid>
-
-      {/* <div style={{ maxHeight: '175px' }}>
+      <Grid item>
         <label htmlFor="contained-button-file">
           <Input
             accept="image/*"
             id="contained-button-file"
             multiple type="file"
             onChange={handleCoverPhoto} />
-          <Tooltip title='Upload a new cover photo' placement='right'>
-            <Button variant="contained" component="span">
-              Upload
+          <Tooltip title='Upload a new cover photo' placement='bottom' arrow>
+            <Button variant="contained" component="span" startIcon={<AddPhotoAlternateIcon />}>
+              Edit cover photo
             </Button>
           </Tooltip>
         </label>
-      </div> */}
-
-      <h3>Upload a cover photo</h3>
-      {!!coverPhoto && (
-        <div>
-          <img alt="not found" width={"250px"} src={coverPhoto} />
-          <br />
-          <Button onClick={handleCoverRemove}>Remove</Button>
-        </div>
-      )}
-      <br />
-      <br />
-      <form
-        encType="multipart/form-data"
-      >
-        <input
-          type="file"
-          name="myImage"
-          onChange={handleCoverPhotoChange}
-        />
-      </form>
-    </>
+      </Grid>
+    </Grid>
   );
 
 };
